@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const bodyParser = require("body-parser");
 const db = require("./models/");
@@ -22,8 +23,15 @@ app.get("/prueba", (req, res) => {
     const nombres = ["Juan", "Pedro", "Maria"];
     res.render("prueba", { listaNombres: nombres })
 })
-app.get('/hola', (req, res) => {
+app.get('/hola', async (req, res) => {
     res.send('¡Hola Mundo!')
+    await db.persona.create({
+        nombre: "Juan",
+        apellido: "Pérez",
+        edad: 30,
+        ciudad: "Santa Cruz",
+        fechaNacimiento: new Date('1993-05-15')
+    });
 })
 app.get('/form', (req, res) => {
     res.sendFile('form.html', { root: __dirname })
