@@ -7,47 +7,60 @@
                         <div class="card-title">
                             <h1>Lista de Personas</h1>
                         </div>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th>Edad</th>
-                                    <th>Ciudad</th>
-                                    <th>Fecha de Nacimiento</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% personaArr.forEach(persona=> { %>
-                                    <tr>
-                                        <td>
-                                            <%= persona.id %>
-                                        </td>
-                                        <td>
-                                            <%= persona.nombre %>
-                                        </td>
-                                        <td>
-                                            <%= persona.apellido %>
-                                        </td>
-                                        <td>
-                                            <%= persona.edad %>
-                                        </td>
-                                        <td>
-                                            <%= persona.ciudad %>
-                                        </td>
-                                        <td>
-                                            <%= persona.fechaNacimiento.toISOString().split('T')[0] %>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-primary" href="/personas/<%= persona.id %>">Editar</a>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
+                        <% if (personaArr.length==0) { %>
+                            <p>No hay personas registradas.</p>
+                            <% } else { %>
 
-                            </tbody>
-                        </table>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Apellido</th>
+                                            <th>Edad</th>
+                                            <th>Ciudad</th>
+                                            <th>Fecha de Nacimiento</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% personaArr.forEach(persona=> { %>
+                                            <tr>
+                                                <td>
+                                                    <%= persona.id %>
+                                                </td>
+                                                <td>
+                                                    <%= persona.nombre %>
+                                                </td>
+                                                <td>
+                                                    <%= persona.apellido %>
+                                                </td>
+                                                <td>
+                                                    <%= persona.edad %>
+                                                </td>
+                                                <td>
+                                                    <%= persona.ciudad %>
+                                                </td>
+                                                <td>
+                                                    <%= persona.fechaNacimiento.toISOString().split('T')[0] %>
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-primary"
+                                                        href="/personas/<%= persona.id %>">Editar</a>
+                                                </td>
+                                                <td>
+                                                    <form
+                                                        onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta persona?');"
+                                                        method="POST" action="/personas/<%= persona.id %>/delete">
+                                                        <button class="btn btn-danger" type="submit">Eliminar</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                    </tbody>
+                                </table>
+                                <% } %>
                     </div>
                 </div>
             </div>

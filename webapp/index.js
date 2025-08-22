@@ -29,6 +29,15 @@ app.get('/personas', async (req, res) => {
     const personaArr = await db.persona.findAll();
     res.render("personas/list", { personaArr });
 })
+
+app.post('/personas/:id/delete', async (req, res) => {
+    const id = req.params.id;
+    await db.persona.destroy({
+        where: { id }
+    });
+    res.redirect('/personas');
+})
+
 app.get('/personas/create', (req, res) => {
 
     res.render("personas/form", { persona: null });
