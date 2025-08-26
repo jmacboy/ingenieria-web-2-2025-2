@@ -10,4 +10,5 @@ module.exports = {
     persona,
     materia,
     sequelize,
+    Sequelize: sequelize.Sequelize
 }

@@ -50,5 +50,14 @@ module.exports = (app, db) => {
         });
         res.redirect('/materias');
     });
-
+    app.get('/search', async (req, res) => {
+        const query = req.query.q;
+        const materiaArr = await db.materia.findAll({
+            where: {
+                nombre: { [db.Sequelize.Op.like]: `%${query}%` }
+            },
+            include: 'docente'
+        });
+        res.render("materias/list", { materiaArr });
+    });
 }
