@@ -17,38 +17,9 @@ db.sequelize.sync({
     console.log("db resync");
 });
 
+require("./routes")(app);
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
-app.get("/prueba", (req, res) => {
-    const nombres = ["Juan", "Pedro", "Maria"];
-    res.render("prueba", { listaNombres: nombres })
-})
-
-
-app.get('/hola', async (req, res) => {
-    res.send('¡Hola Mundo!')
-    await db.persona.create({
-        nombre: "Juan",
-        apellido: "Pérez",
-        edad: 30,
-        ciudad: "Santa Cruz",
-        fechaNacimiento: new Date('1993-05-15')
-    });
-})
-app.get('/form', (req, res) => {
-    res.sendFile('form.html', { root: __dirname })
-})
-app.post('/form-submit', (req, res) => {
-    const name = req.query.name;
-    const lastName = req.query.lastName;
-    res.send(`Nombre: ${name}, Apellido: ${lastName}`);
-})
-
-require("./controllers/persona.controller")(app, db);
-require("./controllers/materia.controller")(app, db);
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`App listening on port ${port}`)
 })
