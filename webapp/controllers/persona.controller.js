@@ -1,6 +1,7 @@
 const db = require("../models/");
 
 exports.getPersonaList = async (req, res) => {
+
     const personaArr = await db.persona.findAll();
     res.render("personas/list", { personaArr });
 }
