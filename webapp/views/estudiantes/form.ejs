@@ -5,35 +5,46 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">
-                            <h1>Formulario de personas</h1>
+                            <h1>Formulario de estudiantes</h1>
                         </div>
                         <form action="" method="POST">
                             <div class="mb-2">
                                 <label class="form-label" for="nombre">Nombre:</label>
                                 <input class="form-control" type="text" id="nombre" name="nombre" required
-                                    value="<%= persona?.nombre%>">
+                                    value="<%= estudiante?.persona.nombre%>">
                             </div>
                             <div class="mb-2">
                                 <label class="form-label" for="apellido">Apellido:</label>
                                 <input class="form-control" type="text" id="apellido" name="apellido" required
-                                    value="<%= persona?.apellido%>">
+                                    value="<%= estudiante?.persona.apellido%>">
                             </div>
                             <div class="mb-2">
                                 <label class="form-label" for="edad">Edad:</label>
                                 <input class="form-control" type="number" id="edad" name="edad" required
-                                    value="<%= persona?.edad %>">
+                                    value="<%= estudiante?.persona.edad %>">
                             </div>
                             <div class="mb-2">
                                 <label class="form-label" for="ciudad">Ciudad:</label>
                                 <input class="form-control" type="text" id="ciudad" name="ciudad" required
-                                    value="<%= persona?.ciudad  %>">
+                                    value="<%= estudiante?.persona.ciudad  %>">
                             </div>
                             <div class="mb-2">
                                 <label class="form-label" for="fechaNacimiento">Fecha de Nacimiento:</label>
                                 <input class="form-control" type="date" id="fechaNacimiento" name="fechaNacimiento"
-                                    required value="<%= persona?.fechaNacimiento.toISOString().split('T')[0] %>">
+                                    required
+                                    value="<%= estudiante?.persona.fechaNacimiento.toISOString().split('T')[0] %>">
                             </div>
-                            <button class="btn btn-primary" type="submit">Guardar Persona</button>
+                            <div class="mb-2">
+                                <label class="form-label" for="telefono">Teléfono:</label>
+                                <input class="form-control" type="text" id="telefono" name="telefono" required
+                                    value="<%= estudiante?.telefono  %>">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="email">Email:</label>
+                                <input class="form-control" type="email" id="email" name="email" required
+                                    value="<%= estudiante?.email  %>">
+                            </div>
+                            <button class="btn btn-primary" type="submit">Guardar Estudiante</button>
                         </form>
                     </div>
                 </div>

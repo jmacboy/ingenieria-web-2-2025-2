@@ -2,22 +2,32 @@ const db = require("../models/");
 
 exports.getMateriaList = async (req, res) => {
     const materiaArr = await db.materia.findAll({
-        include: 'docente'
+        include: [
+            { model: db.docente, as: 'docente', include: { model: db.persona, as: "persona" } }
+        ]
     });
+    console.log(materiaArr);
     res.render("materias/list", { materiaArr });
 }
 
 exports.postMateriaDelete = async (req, res) => {
     const id = req.params.id;
+    const materia = await db.materia.findByPk(id);
+    if (!materia) {
+        res.redirect('/materias');
+        return;
+    }
     await db.materia.destroy({
         where: { id }
     });
     res.redirect('/materias');
 }
 
-//El get siemper muestra el formulario
+//El get siempre muestra el formulario
 exports.getMateriaCreate = async (req, res) => {
-    const docenteArr = await db.persona.findAll();
+    const docenteArr = await db.docente.findAll({
+        include: 'persona'
+    });
     res.render("materias/form", { materia: null, docenteArr });
 }
 
@@ -35,12 +45,23 @@ exports.postMateriaCreate = async (req, res) => {
 
 exports.getMateriaById = async (req, res) => {
     const materia = await db.materia.findByPk(req.params.id);
-    const docenteArr = await db.persona.findAll();
+    if (!materia) {
+        res.redirect('/materias');
+        return;
+    }
+    const docenteArr = await db.docente.findAll({
+        include: 'persona'
+    });
     res.render("materias/form", { materia, docenteArr });
 }
 
 exports.postMateriaUpdate = async (req, res) => {
     const id = req.params.id;
+    const materia = await db.materia.findByPk(id);
+    if (!materia) {
+        res.redirect('/materias');
+        return;
+    }
     const { nombre, descripcion, creditos, idDocente } = req.body;
     await db.materia.update({
         nombre,

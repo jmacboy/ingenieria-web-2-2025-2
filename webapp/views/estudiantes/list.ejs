@@ -1,0 +1,126 @@
+<%- include('../components/header.ejs') %>
+    <div class="container">
+        <div class="row mt-4 mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h1>Lista de Estudiantes</h1>
+                        </div>
+                        <% if (estudianteArr.length==0) { %>
+                            <p>No hay estudiantes registrados.</p>
+                            <% } else { %>
+                                <div class="table-responsive">
+                                    <table class="table ">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>ID</th>
+                                                <th>Nombre</th>
+                                                <th>Apellido</th>
+                                                <th>Edad</th>
+                                                <th>Ciudad</th>
+                                                <th>Fecha de Nacimiento</th>
+                                                <th>Teléfono</th>
+                                                <th>Email</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% estudianteArr.forEach(estudiante=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <img src="/uploads/estudiantes/<%= estudiante.id %>.jpg"
+                                                            alt="Foto de perfil"
+                                                            onclick="changeImage('<%= estudiante.id %>')"
+                                                            data-bs-toggle="modal" data-bs-target="#photoModal"
+                                                            style="height: 50px; cursor: pointer;" />
+                                                    </td>
+                                                    <td>
+                                                        <%= estudiante.persona.id %>
+                                                    </td>
+                                                    <td>
+                                                        <%= estudiante.persona.nombre %>
+                                                    </td>
+                                                    <td>
+                                                        <%= estudiante.persona.apellido %>
+                                                    </td>
+                                                    <td>
+                                                        <%= estudiante.persona.edad %>
+                                                    </td>
+                                                    <td>
+                                                        <%= estudiante.persona.ciudad %>
+                                                    </td>
+                                                    <td>
+                                                        <%= estudiante.persona.fechaNacimiento.toISOString().split('T')[0]
+                                                            %>
+                                                    </td>
+                                                    <td>
+                                                        <%= estudiante.telefono %>
+                                                    </td>
+                                                    <td>
+                                                        <%= estudiante.email %>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-success"
+                                                            href="/estudiantes/<%= estudiante.id %>/profile">Foto de
+                                                            Perfil</a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-primary"
+                                                            href="/estudiantes/<%= estudiante.id %>">Editar</a>
+                                                    </td>
+                                                    <td>
+                                                        <form
+                                                            onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta estudiante?');"
+                                                            method="POST"
+                                                            action="/estudiantes/<%= estudiante.id %>/delete">
+                                                            <button class="btn btn-danger"
+                                                                type="submit">Eliminar</button>
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-primary"
+                                                            href="/inscripciones/<%= estudiante.id %>/enrollment">Inscribir</a>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <% } %>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="photoModal" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img id="imgProfilePicture" src="" alt="Foto de perfil"
+                                                        class="img-thumbnail">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function changeImage(estudianteId) {
+            const imgElement = document.getElementById('imgProfilePicture');
+            imgElement.src = `/uploads/estudiantes/${estudianteId}.jpg`;
+        }
+    </script>
+    <%- include('../components/footer.ejs') %>

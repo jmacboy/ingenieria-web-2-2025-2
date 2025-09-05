@@ -29,8 +29,8 @@
                                     <option value="">Seleccione un docente</option>
                                     <% docenteArr.forEach(docente=> { %>
                                         <option value="<%= docente.id %>" <%=materia?.idDocente===docente.id
-                                            ? 'selected' : '' %>><%= docente.nombre %>
-                                                <%= docente.apellido %>
+                                            ? 'selected' : '' %>><%= docente.persona.nombre %>
+                                                <%= docente.persona.apellido %>
                                         </option>
                                         <% }) %>
                                 </select>

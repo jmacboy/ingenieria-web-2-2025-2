@@ -3,14 +3,36 @@ const { sequelize } = require("../config/db.config");
 const persona = require("./persona")(sequelize);
 const materia = require("./materia")(sequelize);
 const usuario = require("./usuario")(sequelize);
+const estudiante = require("./estudiante")(sequelize);
+const docente = require("./docente")(sequelize);
+const inscripcion = require("./inscripcion")(sequelize);
+const inscripcionMateria = require("./inscripcion_materia")(sequelize);
 
-persona.hasMany(materia, { foreignKey: "idDocente", as: "materias" });
-materia.belongsTo(persona, { foreignKey: "idDocente", as: "docente" });
+//Relaciones de 1 a N
+inscripcion.belongsTo(estudiante, { foreignKey: "idEstudiante", as: "estudiante" });
+estudiante.hasMany(inscripcion, { foreignKey: "idEstudiante", as: "inscripciones" });
+
+inscripcionMateria.belongsTo(inscripcion, { foreignKey: "idInscripcion", as: "inscripcion" });
+inscripcion.hasMany(inscripcionMateria, { foreignKey: "idInscripcion", as: "inscripcionMaterias" });
+
+inscripcionMateria.belongsTo(materia, { foreignKey: "idMateria", as: "materia" });
+materia.hasMany(inscripcionMateria, { foreignKey: "idMateria", as: "inscripcionMaterias" });
+
+docente.hasMany(materia, { foreignKey: "idDocente", as: "materias" });
+materia.belongsTo(docente, { foreignKey: "idDocente", as: "docente" });
+
+//relación 1 a 1
+docente.belongsTo(persona, { foreignKey: "idPersona", as: "persona" });
+estudiante.belongsTo(persona, { foreignKey: "idPersona", as: "persona" });
 
 module.exports = {
     persona,
     materia,
     usuario,
+    estudiante,
+    docente,
+    inscripcion,
+    inscripcionMateria,
     sequelize,
     Sequelize: sequelize.Sequelize
 }

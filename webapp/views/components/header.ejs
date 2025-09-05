@@ -24,11 +24,21 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                Personas
+                                Estudiantes
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/personas">Lista de Personas</a></li>
-                                <li><a class="dropdown-item" href="/personas/create">Agregar Persona</a></li>
+                                <li><a class="dropdown-item" href="/estudiantes">Lista de Estudiantes</a></li>
+                                <li><a class="dropdown-item" href="/estudiantes/create">Agregar Estudiante</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Docentes
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/docentes">Lista de Docentes</a></li>
+                                <li><a class="dropdown-item" href="/docentes/create">Agregar Docente</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -41,8 +51,15 @@
                                 <li><a class="dropdown-item" href="/materias/create">Agregar Materia</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/logout">Cerrar sesión</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <%= locals.nombreCompleto %>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li> <a class="dropdown-item" href="/logout">Cerrar sesión</a>
+                                </li>
+                            </ul>
                         </li>
                         <% } else { %>
 

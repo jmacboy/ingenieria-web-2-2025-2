@@ -4,5 +4,6 @@ exports.checkUser = (req, res, next) => {
         return;
     }
     res.locals.userEmail = req.session.userEmail;
+    res.locals.nombreCompleto = req.session.nombreCompleto;
     next();
 }

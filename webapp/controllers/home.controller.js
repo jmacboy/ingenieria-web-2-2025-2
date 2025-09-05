@@ -22,6 +22,7 @@ exports.getHola = async (req, res) => {
     });
 }
 exports.getForm = (req, res) => {
+    // eslint-disable-next-line no-undef
     res.sendFile('form.html', { root: __dirname })
 }
 exports.postFormSubmit = (req, res) => {
@@ -35,7 +36,9 @@ exports.getMateriaSearch = async (req, res) => {
         where: {
             nombre: { [db.Sequelize.Op.like]: `%${query}%` }
         },
-        include: 'docente'
+        include: [
+            { model: db.docente, as: 'docente', include: { model: db.persona, as: "persona" } }
+        ]
     });
     res.render("materias/list", { materiaArr });
 };
@@ -56,6 +59,7 @@ exports.postLogin = async (req, res) => {
             return;
         }
         req.session.userEmail = user.email;
+        req.session.nombreCompleto = user.nombreCompleto
         res.redirect("/");
     } catch (error) {
         console.error("Error al iniciar sesión:", error);
