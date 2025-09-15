@@ -16,6 +16,7 @@
     "express": "^5.1.0",
     "express-fileupload": "^1.5.2",
     "express-session": "^1.18.2",
+    "joi": "^18.0.1",
     "mysql2": "^3.14.3",
     "nodemon": "^3.1.10",
     "sequelize": "^6.37.7",
