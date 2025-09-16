@@ -21,6 +21,7 @@ exports.insertPersona = async (req, res) => {
         });
         res.status(201).json(nuevaPersona);
     } catch (error) {
+        console.error(error);
         return res.status(500).json({ error: 'Error al crear la persona' });
     }
 }
@@ -48,6 +49,8 @@ exports.updatePersonaPatch = async (req, res) => {
 
         res.json(persona);
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({ error: 'Error al actualizar la persona' });
     }
 }
@@ -70,6 +73,8 @@ exports.updatePersonaPut = async (req, res) => {
 
         res.json(persona);
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({ error: 'Error al actualizar la persona' });
     }
 }
@@ -79,6 +84,7 @@ exports.deletePersona = async (req, res) => {
         await persona.destroy();
         res.json({ message: 'Persona eliminada correctamente' });
     } catch (error) {
+        console.error(error);
         return res.status(500).json({ error: 'Error al eliminar la persona' });
     }
 }
