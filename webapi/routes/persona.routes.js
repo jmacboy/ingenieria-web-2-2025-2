@@ -1,4 +1,4 @@
-const { personaSchema, personaOptionalSchema } = require("../validators/personaSchema.js");
+const { personaSchema, personaOptionalSchema, personaSearchSchema } = require("../validators/personaSchema.js");
 const validateJson = require("../middlewares/validation.middleware.js");
 const isJsonRequestValid = require("../middlewares/isJsonRequestValid.middleware.js");
 const getObjectOr404 = require("../middlewares/getObjectOr404.middleware.js");
@@ -14,5 +14,6 @@ module.exports = app => {
     router.patch("/:id", isJsonRequestValid, validateJson(personaOptionalSchema), getObjectOr404(db.persona), controller.updatePersonaPatch);
     router.get("/:id", getObjectOr404(db.persona), controller.getPersonaById);
     router.delete("/:id", getObjectOr404(db.persona), controller.deletePersona);
+    router.post("/search", validateJson(personaSearchSchema), controller.searchPersonas);
     app.use('/personas', router);
 };

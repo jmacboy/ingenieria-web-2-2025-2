@@ -89,3 +89,17 @@ exports.deletePersona = async (req, res) => {
     }
 }
 
+exports.searchPersonas = async (req, res) => {
+    const { nombre, apellido } = req.body;
+    const whereClause = {};
+    if (nombre) {
+        whereClause.nombre = { [db.Sequelize.Op.like]: `%${nombre}%` };
+    }
+    if (apellido) {
+        whereClause.apellido = { [db.Sequelize.Op.like]: `%${apellido}%` };
+    }
+    const personas = await db.persona.findAll({
+        where: whereClause
+    });
+    res.json(personas);
+}
