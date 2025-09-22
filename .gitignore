@@ -1,2 +1,3 @@
 webapp/database.sqlite
 *.sqlite
+*.env
