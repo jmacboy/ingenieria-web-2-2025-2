@@ -14,5 +14,6 @@ module.exports = app => {
     router.patch("/:id", isJsonRequestValid, validateJson(docenteOptionalSchema), getObjectOr404(db.docente, { include: 'persona' }), controller.updateDocentePatch);
     router.get("/:id", getObjectOr404(db.docente, { include: 'persona' }), controller.getDocenteById);
     router.delete("/:id", getObjectOr404(db.docente, { include: 'persona' }), controller.deleteDocente);
+    router.post("/:id/photo", getObjectOr404(db.docente), controller.uploadProfilePicture);
     app.use('/docentes', router);
 };

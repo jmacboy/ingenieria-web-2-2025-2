@@ -1,4 +1,6 @@
 const db = require("../models");
+const { deleteFile } = require("../utilities/file.utilities");
+const { generateFileName } = require("../utilities/text.utilities");
 exports.getAllDocentes = async (req, res) => {
     const docentes = await db.docente.findAll({
         include: 'persona'
@@ -109,13 +111,48 @@ exports.deleteDocente = async (req, res) => {
         const docente = req.obj;
         await docente.destroy();
         const persona = await db.persona.findByPk(docente.idPersona);
-
+        const nombreFoto = docente.nombreFoto;
         if (persona) {
             await persona.destroy();
+        }
+        if (nombreFoto) {
+            // eslint-disable-next-line no-undef
+            deleteFile(__dirname + '/../public/uploads/docentes/' + nombreFoto);
         }
         res.json({ message: 'Docente eliminado correctamente' });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Error al eliminar el docente' });
     }
+}
+exports.uploadProfilePicture = async (req, res) => {
+    const docente = req.obj;
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).json({ error: 'No se ha proporcionado ninguna foto' });
+    }
+    const { fotoPerfil } = req.files;
+
+    if (!fotoPerfil) {
+        return res.status(400).json({ error: 'No se ha proporcionado ninguna foto' });
+    }
+    const extension = fotoPerfil.name.split('.').pop().toLowerCase();
+    if (!['jpg', 'jpeg', 'png'].includes(extension)) {
+        return res.status(400).json({ error: 'Formato de imagen no válido. Solo se permiten jpg, jpeg y png.' });
+    }
+    //uuid 
+    const uniqueName = generateFileName(extension);
+    if (docente.nombreFoto) {
+        // eslint-disable-next-line no-undef
+        deleteFile(__dirname + '/../public/uploads/docentes/' + docente.nombreFoto);
+    }
+    // eslint-disable-next-line no-undef
+    const uploadPath = __dirname + '/../public/uploads/docentes/' + uniqueName;
+    await fotoPerfil.mv(uploadPath);
+
+    docente.nombreFoto = uniqueName;
+    await docente.save();
+
+    res.json({
+        docente
+    })
 }
