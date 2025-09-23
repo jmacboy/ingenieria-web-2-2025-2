@@ -139,7 +139,6 @@ exports.uploadProfilePicture = async (req, res) => {
     if (!['jpg', 'jpeg', 'png'].includes(extension)) {
         return res.status(400).json({ error: 'Formato de imagen no válido. Solo se permiten jpg, jpeg y png.' });
     }
-    //uuid 
     const uniqueName = generateFileName(extension);
     if (docente.nombreFoto) {
         // eslint-disable-next-line no-undef

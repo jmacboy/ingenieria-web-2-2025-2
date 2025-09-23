@@ -7,6 +7,7 @@ const estudiante = require("./estudiante")(sequelize);
 const docente = require("./docente")(sequelize);
 const inscripcion = require("./inscripcion")(sequelize);
 const inscripcionMateria = require("./inscripcion_materia")(sequelize);
+const authToken = require("./authToken")(sequelize);
 
 //Relaciones de 1 a N
 inscripcion.belongsTo(estudiante, { foreignKey: "idEstudiante", as: "estudiante" });
@@ -21,6 +22,9 @@ materia.hasMany(inscripcionMateria, { foreignKey: "idMateria", as: "inscripcionM
 docente.hasMany(materia, { foreignKey: "idDocente", as: "materias" });
 materia.belongsTo(docente, { foreignKey: "idDocente", as: "docente" });
 
+usuario.hasMany(authToken, { foreignKey: "idUsuario", as: "authTokens" });
+authToken.belongsTo(usuario, { foreignKey: "idUsuario", as: "usuario" });
+
 //relación 1 a 1
 docente.belongsTo(persona, { foreignKey: "idPersona", as: "persona" });
 estudiante.belongsTo(persona, { foreignKey: "idPersona", as: "persona" });
@@ -33,6 +37,7 @@ module.exports = {
     docente,
     inscripcion,
     inscripcionMateria,
+    authToken,
     sequelize,
     Sequelize: sequelize.Sequelize
 }

@@ -306,6 +306,67 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "upload profile picture",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fotoPerfil",
+									"type": "file",
+									"src": "/C:/Users/jmacb/Desktop/3d print/AirplanePhoneHolderV6[NoMagnets]-byKunzite_0.2mm_PLA_MK3S_4h18m.gcode"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/docentes/3/photo",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"docentes",
+								"3",
+								"photo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@test.com\",\r\n    \"password\": \"123123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/auth/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
