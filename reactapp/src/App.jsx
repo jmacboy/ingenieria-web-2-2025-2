@@ -1,4 +1,4 @@
-import FormPrueba from "./FormPrueba"
+import FormPrueba from "./FormDocente"
 import ListaDocentes from "./ListaDocentes"
 
 const App = () => {
