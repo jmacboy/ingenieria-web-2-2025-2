@@ -2,6 +2,7 @@ const db = require("../models");
 const { deleteFile } = require("../utilities/file.utilities");
 const { generateFileName } = require("../utilities/text.utilities");
 exports.getAllDocentes = async (req, res) => {
+
     const docentes = await db.docente.findAll({
         include: 'persona'
     });

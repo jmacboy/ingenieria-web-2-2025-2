@@ -1,13 +1,16 @@
-import { useState } from "react";
-import SearchTextField from "./components/SearchTextField";
+import { useEffect, useState } from "react";
+import SearchTextField from "../../components/SearchTextField";
 import { Button, Card, Col, Container, Form, FormControl, FormGroup, FormLabel, Row } from "react-bootstrap";
-import RequiredLabel from "./components/RequiredLabel";
+import RequiredLabel from "../../components/RequiredLabel";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import Header from "./components/Header";
+import { useNavigate, useParams } from "react-router-dom";
+import Header from "../../components/Header";
+import moment from "moment";
 
 const FormDocente = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
+
     const [validated, setValidated] = useState(false);
 
     const [nombre, setNombre] = useState("");
@@ -18,12 +21,42 @@ const FormDocente = () => {
     const [email, setEmail] = useState("")
     const [fechaNacimiento, setFechaNacimiento] = useState("")
 
+    useEffect(() => {
+        if (!id) {
+            return;
+        }
+        const fetchDocente = () => {
+            axios.get(`http://localhost:3000/docentes/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            })
+                .then((response) => {
+                    const docente = response.data;
+                    setNombre(docente.persona.nombre || "");
+                    setApellido(docente.persona.apellido || "");
+                    setCiudad(docente.persona.ciudad || "");
+                    setEdad(docente.persona.edad || "");
+                    setFechaNacimiento(moment(docente.persona.fechaNacimiento).format("YYYY-MM-DD") || "");
+                    setTelefono(docente.telefono || "");
+                    setEmail(docente.email || "");
+                })
+                .catch((error) => {
+                    console.error(error);
+                    alert("Error al cargar el docente");
+                    navigate("/");
+                });
+        }
+        fetchDocente();
+    }, [id, navigate])
+
+
     const onDocenteSaveClick = (event) => {
         const form = event.currentTarget;
         let hasErrors = false;
+        event.preventDefault();
+        event.stopPropagation();
         if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
             hasErrors = true;
         }
         setValidated(true);
@@ -31,10 +64,9 @@ const FormDocente = () => {
         if (hasErrors) {
             return;
         }
-        sendPersonaCreate();
-
+        sendPersonaForm();
     }
-    const sendPersonaCreate = () => {
+    const sendPersonaForm = () => {
         const persona = {
             nombre,
             apellido,
@@ -48,7 +80,34 @@ const FormDocente = () => {
         if (fechaNacimiento) {
             persona.fechaNacimiento = fechaNacimiento;
         }
-        axios.post("http://localhost:3000/docentes", persona)
+        if (id) {
+            sendPersonaUpdate(persona);
+        } else {
+            sendPersonaCreate(persona);
+        }
+    }
+
+    const sendPersonaUpdate = (persona) => {
+        axios.put(`http://localhost:3000/docentes/${id}`, persona, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+            .then((response) => {
+                console.log(response.data);
+                navigate("/");
+            }).catch((error) => {
+                console.error(error);
+                alert("Error al guardar el docente");
+            });
+    }
+    const sendPersonaCreate = (persona) => {
+
+        axios.post("http://localhost:3000/docentes", persona, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+        })
             .then((response) => {
                 console.log(response.data);
                 navigate("/");

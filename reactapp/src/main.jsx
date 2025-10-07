@@ -1,12 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import ListaDocentes from './ListaDocentes'
+import ListaDocentes from './pages/docentes/ListaDocentes'
 import App from './App'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css'
-import FormDocente from './FormDocente'
+import FormDocente from './pages/docentes/FormDocente'
+import FormLogin from './pages/auth/FormLogin'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<ListaDocentes />} />
         <Route path="/docentes/create" element={<FormDocente />} />
+        <Route path="/docentes/:id/edit" element={<FormDocente />} />
         <Route path="/hola" element={<App />} />
+        <Route path="/login" element={<FormLogin />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

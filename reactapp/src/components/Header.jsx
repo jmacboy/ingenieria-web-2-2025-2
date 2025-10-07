@@ -1,4 +1,5 @@
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Header = () => {
     return (
@@ -10,10 +11,10 @@ const Header = () => {
                     <Nav className="me-auto">
                         <Nav.Link href="/">Home</Nav.Link>
                         <NavDropdown title="Docentes" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="/">
+                            <Link className="dropdown-item" to="/">
                                 Lista de docentes
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href="/docentes/create">Crear docente</NavDropdown.Item>
+                            </Link>
+                            <Link className="dropdown-item" to="/docentes/create">Crear docente</Link>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
