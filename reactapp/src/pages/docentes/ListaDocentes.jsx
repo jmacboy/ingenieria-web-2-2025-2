@@ -1,27 +1,26 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
 import SearchTextField from "../../components/SearchTextField";
 import Header from "../../components/Header";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import useAuthentication from "../../../hooks/useAuthentication";
+import { deleteDocente, getAllDocentes } from "../../../services/DocenteService";
 
 const ListaDocentes = () => {
     const navigate = useNavigate();
+    useAuthentication(true);
     const [listaDocentes, setListaDocentes] = useState([]);
     const [docentesFiltrados, setDocentesFiltrados] = useState([]);
 
     const fetchDocentes = () => {
-        axios.get("http://localhost:3000/docentes", {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        })
-            .then((response) => {
-                setListaDocentes(response.data);
-                setDocentesFiltrados(response.data);
-                console.log(response.data);
-            });
+        getAllDocentes().then((docentes) => {
+            setListaDocentes(docentes);
+            setDocentesFiltrados(docentes);
+            console.log(docentes);
+        }).catch(() => {
+            alert("Error al cargar los docentes");
+        });
     }
     useEffect(() => {
         fetchDocentes();
@@ -33,18 +32,11 @@ const ListaDocentes = () => {
         if (!window.confirm("¿Está seguro de eliminar el docente?")) {
             return;
         }
-        axios.delete(`http://localhost:3000/docentes/${id}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        })
-            .then(() => {
-                fetchDocentes();
-            })
-            .catch((error) => {
-                console.error(error);
-                alert("Error al eliminar el docente");
-            });
+        deleteDocente(id).then(() => {
+            fetchDocentes();
+        }).catch(() => {
+            alert("Error al eliminar el docente");
+        });
     }
     const onSearchChanged = (event) => {
         const text = event.target.value.toLowerCase();

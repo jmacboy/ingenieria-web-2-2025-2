@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import SearchTextField from "../../components/SearchTextField";
 import { Button, Card, Col, Container, Form, FormControl, FormGroup, FormLabel, Row } from "react-bootstrap";
 import RequiredLabel from "../../components/RequiredLabel";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import moment from "moment";
+import useAuthentication from "../../../hooks/useAuthentication";
+import { createDocente, getDocenteById, updateDocente } from "../../../services/DocenteService";
 
 const FormDocente = () => {
     const navigate = useNavigate();
+    useAuthentication(true);
+
     const { id } = useParams();
 
     const [validated, setValidated] = useState(false);
@@ -21,31 +23,24 @@ const FormDocente = () => {
     const [email, setEmail] = useState("")
     const [fechaNacimiento, setFechaNacimiento] = useState("")
 
+
     useEffect(() => {
         if (!id) {
             return;
         }
         const fetchDocente = () => {
-            axios.get(`http://localhost:3000/docentes/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
-            })
-                .then((response) => {
-                    const docente = response.data;
-                    setNombre(docente.persona.nombre || "");
-                    setApellido(docente.persona.apellido || "");
-                    setCiudad(docente.persona.ciudad || "");
-                    setEdad(docente.persona.edad || "");
-                    setFechaNacimiento(moment(docente.persona.fechaNacimiento).format("YYYY-MM-DD") || "");
-                    setTelefono(docente.telefono || "");
-                    setEmail(docente.email || "");
-                })
-                .catch((error) => {
-                    console.error(error);
-                    alert("Error al cargar el docente");
-                    navigate("/");
-                });
+            getDocenteById(id).then((docente) => {
+                setNombre(docente.persona.nombre || "");
+                setApellido(docente.persona.apellido || "");
+                setCiudad(docente.persona.ciudad || "");
+                setEdad(docente.persona.edad || "");
+                setFechaNacimiento(moment(docente.persona.fechaNacimiento).format("YYYY-MM-DD") || "");
+                setTelefono(docente.telefono || "");
+                setEmail(docente.email || "");
+            }).catch(() => {
+                alert("Error al cargar el docente");
+                navigate("/");
+            });
         }
         fetchDocente();
     }, [id, navigate])
@@ -88,33 +83,22 @@ const FormDocente = () => {
     }
 
     const sendPersonaUpdate = (persona) => {
-        axios.put(`http://localhost:3000/docentes/${id}`, persona, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        })
-            .then((response) => {
-                console.log(response.data);
+        updateDocente(id, persona)
+            .then((docenteActualizado) => {
+                console.log(docenteActualizado);
                 navigate("/");
-            }).catch((error) => {
-                console.error(error);
-                alert("Error al guardar el docente");
+            })
+            .catch(() => {
+                alert("Error al actualizar el docente");
             });
     }
     const sendPersonaCreate = (persona) => {
-
-        axios.post("http://localhost:3000/docentes", persona, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        })
-            .then((response) => {
-                console.log(response.data);
-                navigate("/");
-            }).catch((error) => {
-                console.error(error);
-                alert("Error al guardar el docente");
-            });
+        createDocente({ persona }).then((nuevoDocente) => {
+            console.log(nuevoDocente);
+            navigate("/");
+        }).catch(() => {
+            alert("Error al crear el docente");
+        });
     }
     const onCancelClick = () => {
         navigate("/");

@@ -1,20 +1,21 @@
 import { useState } from "react";
 import { Button, Card, Col, Container, Form, FormControl, FormGroup, FormLabel, Row } from "react-bootstrap";
 import RequiredLabel from "../../components/RequiredLabel";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
-import useAuthentication from "../../../hooks/useAuthentication";
 
-const FormLogin = () => {
+const FormRegister = () => {
     const navigate = useNavigate();
-    const { doLogin } = useAuthentication(false);
+
 
     const [validated, setValidated] = useState(false);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
+    const [nombreCompleto, setNombreCompleto] = useState("")
 
-    const onDocenteSaveClick = (event) => {
+    const onFormSubmit = (event) => {
         const form = event.currentTarget;
         let hasErrors = false;
         event.preventDefault();
@@ -27,14 +28,23 @@ const FormLogin = () => {
         if (hasErrors) {
             return;
         }
-        sendLoginForm();
+        sendRegisterForm();
     }
-    const sendLoginForm = () => {
-        const loginData = {
+    const sendRegisterForm = () => {
+        const registerData = {
             email,
             password,
+            nombreCompleto
         }
-        doLogin(loginData);
+        axios.post("http://localhost:3000/auth/register", registerData)
+            .then((response) => {
+                console.log(response.data);
+                navigate("/login");
+            })
+            .catch((error) => {
+                console.error(error);
+                alert("Error al registrarse");
+            });
     }
 
     const onCancelClick = () => {
@@ -48,10 +58,17 @@ const FormLogin = () => {
                     <Col md={6} xl={4}>
                         <Card>
                             <Card.Body>
-                                <Form noValidate validated={validated} onSubmit={onDocenteSaveClick}>
+                                <Form noValidate validated={validated} onSubmit={onFormSubmit}>
                                     <Row>
                                         <Col>
-                                            <h1>Iniciar sesión</h1>
+                                            <h1>Registro</h1>
+                                            <FormGroup>
+                                                <RequiredLabel htmlFor="txtNombreCompleto">Nombre Completo</RequiredLabel>
+                                                <FormControl id="txtNombreCompleto" required maxLength={100} type="text" value={nombreCompleto} onChange={(e) => {
+                                                    setNombreCompleto(e.target.value);
+                                                }} />
+                                                <FormControl.Feedback type="invalid">El nombre completo es obligatorio</FormControl.Feedback>
+                                            </FormGroup>
                                             <FormGroup>
                                                 <RequiredLabel htmlFor="txtEmail">Email</RequiredLabel>
                                                 <FormControl id="txtEmail" required maxLength={100} type="text" value={email} onChange={(e) => {
@@ -82,4 +99,4 @@ const FormLogin = () => {
     );
 }
 
-export default FormLogin;
+export default FormRegister;
