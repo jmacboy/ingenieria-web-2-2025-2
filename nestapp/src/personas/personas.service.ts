@@ -1,21 +1,25 @@
 import { Injectable } from "@nestjs/common";
-import { Persona } from "./models/persona.model";
 import { PersonaInsertDto } from "./dtos/persona-insert.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Persona } from "./entities/persona.entity";
 
 @Injectable()
 export class PersonasService {
-    private readonly personas: Persona[] = [];
+    constructor(
+        @InjectRepository(Persona)
+        private readonly personasRepository: Repository<Persona>,
+    ) {}
 
-    create(persona: PersonaInsertDto): Persona {
+    create(persona: PersonaInsertDto): Promise<Persona> {
         const newPersona: Persona = {
-            id: this.personas.length + 1,
+            id: 0,
             ...persona,
         };
-        this.personas.push(newPersona);
-        return newPersona;
+        return this.personasRepository.save(newPersona);
     }
 
-    getAll(): Persona[] {
-        return this.personas;
+    getAll(): Promise<Persona[]> {
+        return this.personasRepository.find();
     }
 }

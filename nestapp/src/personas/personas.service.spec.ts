@@ -1,18 +1,39 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { PersonasService } from './personas.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { PersonasService } from "./personas.service";
+import { getRepositoryToken } from "@nestjs/typeorm";
+import { Persona } from "./entities/persona.entity";
 
-describe('PersonasService', () => {
-  let service: PersonasService;
+describe("PersonasService", () => {
+    let service: PersonasService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [PersonasService],
-    }).compile();
+    const mockRepository = {
+        find: jest.fn(),
+        findOne: jest.fn(),
+        create: jest.fn(),
+        save: jest.fn(),
+        update: jest.fn(),
+        delete: jest.fn(),
+    };
 
-    service = module.get<PersonasService>(PersonasService);
-  });
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [
+                PersonasService,
+                {
+                    provide: getRepositoryToken(Persona),
+                    useValue: mockRepository,
+                },
+            ],
+        }).compile();
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+        service = module.get<PersonasService>(PersonasService);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it("should be defined", () => {
+        expect(service).toBeDefined();
+    });
 });
