@@ -13,24 +13,23 @@ export class PersonasController {
         return this.personaService.getAll();
     }
     @Get(":id")
-    findOne(@Param("id", ParseIntPipe) id: number) {
-        console.log(id + 5);
-        return id;
+    async findOne(@Param("id", ParseIntPipe) id: number) {
+        return await this.personaService.getById(id);
     }
     @Post("")
     create(@Body() createPersonaDto: PersonaInsertDto) {
         return this.personaService.create(createPersonaDto);
     }
     @Put(":id")
-    update(@Param("id", ParseIntPipe) id: number, @Body() updatePersonaDto: PersonaUpdateDto) {
-        return updatePersonaDto.apellido;
+    async update(@Param("id", ParseIntPipe) id: number, @Body() updatePersonaDto: PersonaInsertDto) {
+        return this.personaService.update(id, updatePersonaDto);
     }
     @Patch(":id")
-    partialUpdate(@Param("id", ParseIntPipe) id: number, @Body() updatePersonaDto: PersonaUpdateDto) {
-        return updatePersonaDto.apellido;
+    async partialUpdate(@Param("id", ParseIntPipe) id: number, @Body() updatePersonaDto: PersonaUpdateDto) {
+        return this.personaService.update(id, updatePersonaDto);
     }
     @Delete(":id")
-    delete(@Param("id", ParseIntPipe) id: number) {
-        return "Persona con id: " + id + " eliminado";
+    async delete(@Param("id", ParseIntPipe) id: number) {
+        return this.personaService.delete(id);
     }
 }

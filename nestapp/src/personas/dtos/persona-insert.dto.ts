@@ -1,15 +1,17 @@
-import { IsNumber, IsOptional, IsString, MinLength } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, MinLength } from "class-validator";
 
 export class PersonaInsertDto {
     @IsString()
     @MinLength(2)
-    nombre: string;
+    @IsNotEmpty()
+    readonly nombre: string;
 
     @IsString()
     @MinLength(2)
-    apellido: string;
+    @IsNotEmpty()
+    readonly apellido: string;
 
     @IsNumber()
-    @IsOptional()
-    edad: number;
+    @IsNotEmpty()
+    readonly edad: number;
 }

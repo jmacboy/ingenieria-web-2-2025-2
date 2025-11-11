@@ -5,6 +5,8 @@ import { PruebaController } from "./prueba/prueba.controller";
 import { PersonasModule } from "./personas/personas.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule } from "@nestjs/config";
+import { AuthModule } from "./auth/auth.module";
+import { UsersModule } from "./users/users.module";
 
 @Module({
     imports: [
@@ -20,6 +22,8 @@ import { ConfigModule } from "@nestjs/config";
             synchronize: true, //solo mientras estén en desarrollo
         }),
         PersonasModule,
+        AuthModule,
+        UsersModule,
     ],
     controllers: [AppController, PruebaController],
     providers: [AppService],

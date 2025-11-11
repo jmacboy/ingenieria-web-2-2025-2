@@ -1,5 +1,17 @@
+import { IsNumber, IsOptional, IsString, MinLength } from "class-validator";
+
 export class PersonaUpdateDto {
-    nombre: string;
-    apellido: string;
-    edad: string;
+    @IsString()
+    @MinLength(2)
+    @IsOptional()
+    readonly nombre: string;
+
+    @IsString()
+    @MinLength(2)
+    @IsOptional()
+    readonly apellido: string;
+
+    @IsNumber()
+    @IsOptional()
+    readonly edad: number;
 }
