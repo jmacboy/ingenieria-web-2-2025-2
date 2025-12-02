@@ -45,14 +45,14 @@ const ListaDocentes = () => {
             return;
         }
         const nuevoFiltro = listaDocentes.filter((docente) => {
-            return docente.persona.nombre.toLowerCase().includes(text)
-                || docente.persona.apellido.toLowerCase().includes(text)
-                || docente.persona.edad.toString().includes(text)
-                || docente.persona.ciudad?.toLowerCase().includes(text)
-                || docente.persona.fechaNacimiento?.toLowerCase().includes(text)
-                || docente.telefono?.toLowerCase().includes(text)
-                || docente.email?.toLowerCase().includes(text)
-                || docente.id.toString().includes(text);
+            return docente.nombre.toLowerCase().includes(text)
+                || docente.apellido.toLowerCase().includes(text)
+                || docente.edad.toString().includes(text)
+            // || docente.persona.ciudad?.toLowerCase().includes(text)
+            // || docente.persona.fechaNacimiento?.toLowerCase().includes(text)
+            // || docente.telefono?.toLowerCase().includes(text)
+            // || docente.email?.toLowerCase().includes(text)
+            // || docente.id.toString().includes(text);
         });
         setDocentesFiltrados(nuevoFiltro);
     }
@@ -74,6 +74,7 @@ const ListaDocentes = () => {
                         <Table striped bordered hover size="sm" responsive>
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>ID</th>
                                     <th>Nombre</th>
                                     <th>Apellido</th>
@@ -84,19 +85,26 @@ const ListaDocentes = () => {
                                     <th>Email</th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {docentesFiltrados.map((docente) => (
                                     <tr key={docente.id}>
+                                        <td>
+                                            {docente.fotoPerfil ? <img alt="Foto de Perfil" src={docente.fotoPerfil} style={{ height: "50px" }} /> : null}
+                                        </td>
                                         <td>{docente.id}</td>
-                                        <td>{docente.persona.nombre}</td>
-                                        <td>{docente.persona.apellido}</td>
-                                        <td>{docente.persona.edad}</td>
-                                        <td>{docente.persona.ciudad}</td>
-                                        <td>{docente.persona.fechaNacimiento && moment(docente.persona.fechaNacimiento).format("DD/MM/YYYY")}</td>
-                                        <td>{docente.telefono}</td>
-                                        <td>{docente.email}</td>
+                                        <td>{docente.nombre}</td>
+                                        <td>{docente.apellido}</td>
+                                        <td>{docente.edad}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <Button variant="secondary" onClick={() => navigate(`/docentes/${docente.id}/photo`)}>Foto</Button>
+                                        </td>
                                         <td>
                                             <Button onClick={onEditClick(docente.id)}>Editar</Button>
                                         </td>

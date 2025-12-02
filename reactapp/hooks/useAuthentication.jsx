@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { getAccessToken, removeAccessToken, saveAccessToken } from "../utils/TokenUtilities";
-import { useEffect } from "react";
-import axios from "axios";
-import { login } from "../services/AuthService";
+import { useEffect, useState } from "react";
+import { login, me } from "../services/AuthService";
 
 const useAuthentication = (checkOnload = false) => {
     const navigate = useNavigate();
-    const userEmail = localStorage.getItem("userEmail") || "";
+    const [userEmail, setUserEmail] = useState('');
     const validateLogin = () => {
         const token = getAccessToken();
         if (!token) {
@@ -14,10 +13,18 @@ const useAuthentication = (checkOnload = false) => {
             return;
         }
     }
+    const reloadUserInfo = () => {
+        me().then((userData) => {
+            console.log("Usuario cargado:", userData);
+            console.log("Email del usuario:", userData.email);
+            setUserEmail(userData.email);
+        }).catch(() => {
+            console.log("Error al cargar la información del usuario");
+        });
+    }
     const doLogin = (loginData) => {
         login(loginData).then((response) => {
             saveAccessToken(response.token);
-            localStorage.setItem("userEmail", loginData.email);
             navigate("/");
         }).catch(() => {
             alert("Error al iniciar sesión");
@@ -27,6 +34,7 @@ const useAuthentication = (checkOnload = false) => {
         removeAccessToken();
         navigate("/login");
     }
+
     useEffect(() => {
         if (!checkOnload) {
             return;
@@ -34,8 +42,12 @@ const useAuthentication = (checkOnload = false) => {
         validateLogin();
         // eslint-disable-next-line
     }, [navigate]);
-
-    return { doLogout, doLogin, userEmail }
+    useEffect(() => {
+        if (!userEmail && getAccessToken()) {
+            reloadUserInfo();
+        }
+    }, [userEmail])
+    return { userEmail, doLogout, doLogin, }
 }
 
 export default useAuthentication;

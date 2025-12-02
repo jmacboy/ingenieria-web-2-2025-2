@@ -1,8 +1,10 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, Request, UseGuards } from "@nestjs/common";
 import { UserLoginDto } from "./dtos/user-login.dto";
 import { AuthService } from "./auth.service";
 import { UserRegisterDto } from "./dtos/user-register.dto";
 import { UserRegisterResponseDto } from "./dtos/register-response.dto";
+import { UserInfoDto } from "./dtos/userinfo-dto";
+import { AuthGuard } from "./auth.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -15,5 +17,11 @@ export class AuthController {
     @Post("register")
     register(@Body() body: UserRegisterDto): Promise<UserRegisterResponseDto> {
         return this.authService.register(body);
+    }
+    @Get("me")
+    @UseGuards(AuthGuard)
+    me(@Req() request: Request): Promise<UserInfoDto> {
+        const loggedInUser = request["user"] as UserInfoDto;
+        return this.authService.getUserById(loggedInUser.id);
     }
 }

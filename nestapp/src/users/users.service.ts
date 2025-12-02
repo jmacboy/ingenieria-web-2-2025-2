@@ -13,8 +13,14 @@ export class UsersService {
     findByEmail(email: string): Promise<User | null> {
         return this.usersRepository.findOneBy({ email });
     }
+    findById(id: number): Promise<User | null> {
+        return this.usersRepository.findOneBy({ id });
+    }
     createUser(user: UserRegisterDto): Promise<User> {
         const newUser = this.usersRepository.create(user);
         return this.usersRepository.save(newUser);
+    }
+    getUserById(id: number): Promise<User | null> {
+        return this.usersRepository.findOneBy({ id });
     }
 }

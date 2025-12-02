@@ -30,13 +30,13 @@ const FormDocente = () => {
         }
         const fetchDocente = () => {
             getDocenteById(id).then((docente) => {
-                setNombre(docente.persona.nombre || "");
-                setApellido(docente.persona.apellido || "");
-                setCiudad(docente.persona.ciudad || "");
-                setEdad(docente.persona.edad || "");
-                setFechaNacimiento(moment(docente.persona.fechaNacimiento).format("YYYY-MM-DD") || "");
-                setTelefono(docente.telefono || "");
-                setEmail(docente.email || "");
+                setNombre(docente.nombre || "");
+                setApellido(docente.apellido || "");
+                setCiudad(docente.ciudad || "");
+                setEdad(docente.edad || "");
+                // setFechaNacimiento(moment(docente.persona.fechaNacimiento).format("YYYY-MM-DD") || "");
+                // setTelefono(docente.telefono || "");
+                // setEmail(docente.email || "");
             }).catch(() => {
                 alert("Error al cargar el docente");
                 navigate("/");
@@ -65,16 +65,16 @@ const FormDocente = () => {
         const persona = {
             nombre,
             apellido,
-            edad,
-            telefono,
-            email,
+            edad: parseInt(edad, 10),
+            // telefono,
+            // email,
         }
         if (ciudad) {
             persona.ciudad = ciudad;
         }
-        if (fechaNacimiento) {
-            persona.fechaNacimiento = fechaNacimiento;
-        }
+        // if (fechaNacimiento) {
+        //     persona.fechaNacimiento = fechaNacimiento;
+        // }
         if (id) {
             sendPersonaUpdate(persona);
         } else {
@@ -145,14 +145,14 @@ const FormDocente = () => {
                                         <Col sm={6}>
                                             <FormGroup>
                                                 <RequiredLabel htmlFor="txtTelefono">Teléfono</RequiredLabel>
-                                                <FormControl required id="txtTelefono" minLength={7} maxLength={15} type="text" value={telefono} onChange={(e) => {
+                                                <FormControl id="txtTelefono" minLength={7} maxLength={15} type="text" value={telefono} onChange={(e) => {
                                                     setTelefono(e.target.value);
                                                 }} />
                                                 <FormControl.Feedback type="invalid">El teléfono es obligatorio</FormControl.Feedback>
                                             </FormGroup>
                                             <FormGroup>
                                                 <RequiredLabel htmlFor="txtEmail">Email</RequiredLabel>
-                                                <FormControl required id="txtEmail" type="email" value={email} onChange={(e) => {
+                                                <FormControl id="txtEmail" type="email" value={email} onChange={(e) => {
                                                     setEmail(e.target.value);
                                                 }} />
                                                 <FormControl.Feedback type="invalid">El email es obligatorio</FormControl.Feedback>

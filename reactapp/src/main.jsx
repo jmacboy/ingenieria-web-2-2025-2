@@ -9,6 +9,8 @@ import './styles.css'
 import FormDocente from './pages/docentes/FormDocente'
 import FormLogin from './pages/auth/FormLogin'
 import FormRegister from './pages/auth/FormRegister'
+import FotoPerfilDocente from './pages/docentes/FotoPerfilDocente'
+import MapPage from './pages/docentes/MapPage'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -16,10 +18,12 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<ListaDocentes />} />
         <Route path="/docentes/create" element={<FormDocente />} />
+        <Route path="/docentes/:id/photo" element={<FotoPerfilDocente />} />
         <Route path="/docentes/:id/edit" element={<FormDocente />} />
         <Route path="/hola" element={<App />} />
         <Route path="/login" element={<FormLogin />} />
         <Route path="/register" element={<FormRegister />} />
+        <Route path="/map" element={<MapPage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

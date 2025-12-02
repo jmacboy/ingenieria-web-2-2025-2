@@ -2,12 +2,17 @@ import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { getAccessToken } from "../../utils/TokenUtilities";
 import useAuthentication from "../../hooks/useAuthentication";
+import { useEffect } from "react";
 
 const Header = () => {
     const { doLogout, userEmail } = useAuthentication();
     const onLogoutClick = () => {
         doLogout();
     }
+    useEffect(() => {
+        console.log("Header - userEmail:", userEmail);
+    }, [userEmail])
+
     const token = getAccessToken();
     return (
         <Navbar bg="primary" data-bs-theme="dark" expand="lg" >
